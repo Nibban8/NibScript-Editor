@@ -1,0 +1,9 @@
+golosina = 20
+papitas = 30
+soda = 15
+
+(golosina + papitas + soda)/3
+
+
+
+
