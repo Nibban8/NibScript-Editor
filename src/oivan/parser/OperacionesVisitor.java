@@ -11,12 +11,25 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface OperacionesVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by {@link OperacionesParser#cuerpo}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCuerpo(OperacionesParser.CuerpoContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code impresionExpresion}
 	 * labeled alternative in {@link OperacionesParser#inicio}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitImpresionExpresion(OperacionesParser.ImpresionExpresionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code declaracion}
+	 * labeled alternative in {@link OperacionesParser#inicio}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeclaracion(OperacionesParser.DeclaracionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code asignacion}
 	 * labeled alternative in {@link OperacionesParser#inicio}.
@@ -31,6 +44,12 @@ public interface OperacionesVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitEspacio(OperacionesParser.EspacioContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link OperacionesParser#strings}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStrings(OperacionesParser.StringsContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code parentesis}
 	 * labeled alternative in {@link OperacionesParser#expr}.

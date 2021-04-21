@@ -1,12 +1,22 @@
 grammar Operaciones;
 
+
+cuerpo: FUNC ID LLAVE_A inicio* LLAVE_C;
+
+
+
 inicio:
-        expr NUEVALINEA             #impresionExpresion
+        PRINT (expr | strings)  SEMI      #impresionExpresion
         |
-        ID IGUAL expr NUEVALINEA    #asignacion
+        LET ID (IGUAL expr)? SEMI   #declaracion
         |
-        NUEVALINEA                  #espacio
+        ID IGUAL expr SEMI          #asignacion
+        |
+        SEMI                        #espacio
         ;
+
+strings : STRING | (STRING MAS)+;
+
 expr :
         expr op = (POR | DIV) expr       #MulDiv
         |
@@ -20,6 +30,11 @@ expr :
         ;
 
 
+LET : 'let';
+FUNC : 'function';
+PRINT: 'print';
+LLAVE_A : '{';
+LLAVE_C : '}';
 ID: [a-z][a-zA-Z0-9]*;
 IGUAL: '=';
 MAS:    '+';
@@ -29,5 +44,7 @@ DIV: '/';
 INT:    [0-9]+;
 PAR_A:  '(';
 PAR_C:  ')';
-NUEVALINEA: [\r\n]+;
-ESPACIOS: [ \t]+ -> skip;
+SEMI: ';';
+STRING: '"' (ESC | .)*? '"';
+fragment ESC: '\\' [btnr"\\];
+ESPACIOS: [ \n\t]+ -> skip;

@@ -3,23 +3,44 @@ package oivan.principal;
 import oivan.parser.OperacionesBaseVisitor;
 import oivan.parser.OperacionesParser;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MyVisitor extends OperacionesBaseVisitor<Integer> {
 
     Map<String,Integer> memoria = new HashMap<String,Integer>();
+    String print = new String();
+
+    @Override
+    public Integer visitDeclaracion(OperacionesParser.DeclaracionContext ctx) {
+
+        String id  = ctx.ID().getText();
+
+       try {
+           int valor = visit(ctx.expr());
+           memoria.put(id,valor);
+
+       } catch (Exception e) {
+           memoria.put(id,0);
+       }
+        return 0;
+    }
 
     @Override
     public Integer visitAsignacion(OperacionesParser.AsignacionContext ctx) {
         String id  = ctx.ID().getText();
         int valor = visit(ctx.expr());
-        memoria.put(id,valor);
+
+        if(memoria.containsKey(id)){
+            memoria.put(id,valor);
+        }
+        else {
+            System.out.println("La variable " + id + " no existe");
+        }
+
+
         return valor;
     }
     @Override
@@ -52,7 +73,6 @@ public class MyVisitor extends OperacionesBaseVisitor<Integer> {
     public Integer visitMulDiv(OperacionesParser.MulDivContext ctx) {
         int izq = visit(ctx.expr(0));
         int der = visit(ctx.expr(1));
-
         if(ctx.op.getType() == OperacionesParser.POR){
             return izq * der;
         }
@@ -61,11 +81,11 @@ public class MyVisitor extends OperacionesBaseVisitor<Integer> {
 
     @Override
     public Integer visitImpresionExpresion(OperacionesParser.ImpresionExpresionContext ctx) {
-        Integer valor = visit(ctx.expr());
-        String res = "El resultado de tu operacion es: " + valor + "\n";
-        System.out.println(res);
+
 
         try {
+            Integer valor = visit(ctx.expr());
+            String res = valor + "\n";
             FileWriter writer = new FileWriter("res.txt", true);
             writer.append(res);
             writer.close();

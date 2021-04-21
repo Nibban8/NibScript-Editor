@@ -1,3 +1,0 @@
-El resultado de tu operacion es: 100
-El resultado de tu operacion es: 20
-El resultado de tu operacion es: 105

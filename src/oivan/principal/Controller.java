@@ -7,6 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import oivan.parser.OperacionesLexer;
 import oivan.parser.OperacionesParser;
@@ -25,8 +27,13 @@ public class Controller {
     public void onEvaluar(MouseEvent mouseEvent) throws IOException {
 
         try {
+
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            //System.out.println(dtf.format(now));
+
             FileWriter writer = new FileWriter("res.txt");
-            writer.write("");
+            writer.write("[" + dtf.format(now) + "]" + " Ejecutando programa... \n");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -38,21 +45,13 @@ public class Controller {
         OperacionesParser sintactico ;
 
         ParseTree arbol ;
-
         MyVisitor visitas = new MyVisitor();
 
-
-        String[] lines = input.toString().split("\n|\r\n");
-
-
-        for(String i:lines){
-            i = i+"\r\n";
-            lexico = new OperacionesLexer(CharStreams.fromString(i));
+            lexico = new OperacionesLexer(CharStreams.fromString(input.toString()));
             tokens = new CommonTokenStream(lexico);
             sintactico = new OperacionesParser(tokens);
-            arbol = sintactico.inicio();
+            arbol = sintactico.cuerpo();
             visitas.visit(arbol);
-        }
 
         try {
             FileReader reader = new FileReader("res.txt");
