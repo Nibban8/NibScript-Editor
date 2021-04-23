@@ -3,7 +3,8 @@ package oivan.principal;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.io.*;
@@ -19,15 +20,22 @@ import org.antlr.v4.runtime.tree.ParseTree;
 
 public class Controller {
 
+    private static final KeyCode ENTER = KeyCode.ENTER;
+
+
+    private int lines = 0;
+
     @FXML
     private TextArea exp;
     @FXML
     private TextArea res;
+    @FXML
+    private TextArea lineCount;
 
     public void onEvaluar(MouseEvent mouseEvent) throws IOException {
 
-        try {
 
+        try {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
             //System.out.println(dtf.format(now));
@@ -81,5 +89,17 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public void onKeyTyped(KeyEvent keyEvent) {
+
+            if(keyEvent.getCode().equals(ENTER)){
+                lineCount.setText("");
+                for(int i = 0; i < exp.getText().lines().count()+1; i++){
+                    lineCount.appendText("\t" + (i+1) + "\n");
+                }
+            }
+
     }
 }

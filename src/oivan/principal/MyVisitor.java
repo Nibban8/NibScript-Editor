@@ -18,13 +18,30 @@ public class MyVisitor extends OperacionesBaseVisitor<Integer> {
 
         String id  = ctx.ID().getText();
 
-       try {
-           int valor = visit(ctx.expr());
-           memoria.put(id,valor);
 
-       } catch (Exception e) {
-           memoria.put(id,0);
-       }
+        if(memoria.containsKey(id)){
+
+
+            try {
+                FileWriter writer = new FileWriter("res.txt", true);
+                writer.append("La variable "+ id + " esta repetida");
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            throw new VariableDuplicadaException();
+
+        }
+        else{
+            try {
+                int valor = visit(ctx.expr());
+                memoria.put(id,valor);
+
+            } catch (Exception e) {
+                memoria.put(id,0);
+            }
+        }
         return 0;
     }
 
@@ -37,7 +54,14 @@ public class MyVisitor extends OperacionesBaseVisitor<Integer> {
             memoria.put(id,valor);
         }
         else {
-            System.out.println("La variable " + id + " no existe");
+            try {
+                FileWriter writer = new FileWriter("res.txt", true);
+                writer.append("La variable " + id + " no existe");
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
 
 
