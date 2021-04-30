@@ -1,19 +1,14 @@
 package oivan.principal;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
-
-import java.io.FileWriter;
-import java.io.IOException;
-
-public class VariableNoExisteException extends RuntimeException{
-
-    @FXML
-    private TextArea res;
 
 
-    public VariableNoExisteException(){
-        //System.out.println("Una variable no existe");
-        res.setText("Una variable no existe");
+public class VariableNoExisteException extends Exception{
+
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+
+    public VariableNoExisteException(String errorMessage){
+        //super(errorMessage);
+        System.out.println(ANSI_RED + errorMessage + ANSI_RESET);
     }
 }

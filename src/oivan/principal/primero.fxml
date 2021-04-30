@@ -40,6 +40,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.TextFlow?>
 
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oivan.principal.Controller">
   <children>
@@ -84,11 +85,11 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color: #363934;" VBox.vgrow="ALWAYS">
       <children>
-            <TextArea fx:id="exp" layoutX="105.0" layoutY="20.0" onKeyPressed="#onKeyTyped" opacity="0.8" prefHeight="238.0" prefWidth="507.0" />
-            <TextArea fx:id="res" layoutX="23.0" layoutY="265.0" opacity="0.8" prefHeight="99.0" prefWidth="388.0" />
+            <TextArea fx:id="lineCount" disable="true" layoutX="23.0" layoutY="25.0" prefHeight="234.0" prefWidth="51.0" style="-fx-border-radius: 0px;" />
             <Button layoutX="422.0" layoutY="272.0" mnemonicParsing="false" onMouseClicked="#onEvaluar" prefHeight="36.0" prefWidth="192.0" text="Evaluar" />
             <Button layoutX="422.0" layoutY="319.0" mnemonicParsing="false" onAction="#onLimpiar" prefHeight="36.0" prefWidth="192.0" text="Limpiar" />
-            <TextArea fx:id="lineCount" disable="true" layoutX="23.0" layoutY="20.0" opacity="0.88" prefHeight="238.0" prefWidth="73.0" style="-fx-text-fill: blue; -fx-hbar-policy: never; -fx-vbar-policy: never;" />
+            <TextFlow fx:id="res" layoutX="23.0" layoutY="266.0" opacity="0.8" prefHeight="93.0" prefWidth="393.0" style="-fx-background-color: white;" />
+            <TextArea fx:id="exp" layoutX="63.0" layoutY="25.0" onKeyPressed="#onKeyTyped" prefHeight="234.0" prefWidth="550.0" style="-fx-background-color: white; -fx-border-radius: 0px; -fx-border-color: blue;" />
       </children>
     </AnchorPane>
   </children>

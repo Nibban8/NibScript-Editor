@@ -1,12 +1,20 @@
 grammar Operaciones;
 
 
-cuerpo: FUNC ID LLAVE_A inicio* LLAVE_C;
+inicio: FUNC ID LLAVE_A cuerpo LLAVE_C;
 
+printConent : expr #printExpr | strings #printString;
+functElse: ELSE LLAVE_A cuerpo LLAVE_C;
+functIF: IF PAR_A condition PAR_C LLAVE_A cuerpo LLAVE_C (functElse)? #ifHeader ;
 
+cuerpo: linea+;
 
-inicio:
-        PRINT (expr | strings)  SEMI      #impresionExpresion
+condition: expr comparation expr;
+
+linea:
+        functIF                           #functionIF
+        |
+        PRINT printConent SEMI      #impresion
         |
         LET ID (IGUAL expr)? SEMI   #declaracion
         |
@@ -15,7 +23,10 @@ inicio:
         SEMI                        #espacio
         ;
 
-strings : STRING | (STRING MAS)+;
+
+comparation: EQ | NEQ | EQ_G | EQ_L | GREATER | LESS ;
+
+strings : (STRING | STRING MAS)+;
 
 expr :
         expr op = (POR | DIV) expr       #MulDiv
@@ -30,6 +41,18 @@ expr :
         ;
 
 
+
+EQ : '==';
+GREATER : '>';
+LESS : '<';
+EQ_G : '>=';
+EQ_L : '<=';
+NEQ : '!=';
+
+
+
+IF : 'if';
+ELSE : 'else';
 LET : 'let';
 FUNC : 'function';
 PRINT: 'print';

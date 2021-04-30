@@ -2,6 +2,8 @@ package oivan.principal;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -11,6 +13,10 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import oivan.parser.OperacionesLexer;
 import oivan.parser.OperacionesParser;
 import org.antlr.v4.runtime.CharStream;
@@ -28,9 +34,13 @@ public class Controller {
     @FXML
     private TextArea exp;
     @FXML
-    private TextArea res;
+    private TextFlow res;
     @FXML
     private TextArea lineCount;
+
+
+
+
 
     public void onEvaluar(MouseEvent mouseEvent) throws IOException {
 
@@ -58,7 +68,7 @@ public class Controller {
             lexico = new OperacionesLexer(CharStreams.fromString(input.toString()));
             tokens = new CommonTokenStream(lexico);
             sintactico = new OperacionesParser(tokens);
-            arbol = sintactico.cuerpo();
+            arbol = sintactico.inicio();
             visitas.visit(arbol);
 
         try {
@@ -67,7 +77,12 @@ public class Controller {
             String line;
 
             while ((line = bufferedReader.readLine()) != null) {
-                res.appendText(line + "\n");
+                //res.appendText(line + "\n");
+                Text texto = new Text(line + "\n");
+                if(line.charAt(0) == '*'){
+                    texto.setFill(Color.RED);
+                }
+                res.getChildren().add(texto) ;
             }
             reader.close();
 
@@ -80,8 +95,8 @@ public class Controller {
 
     public void onLimpiar(ActionEvent actionEvent) {
         exp.setText("");
-        res.setText("");
-
+        res.getChildren().clear();
+        lineCount.setText("");
         try {
             FileWriter writer = new FileWriter("res.txt");
             writer.write("");
@@ -89,17 +104,29 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
 
     public void onKeyTyped(KeyEvent keyEvent) {
+        // Linea para sincronizar los dos scrolls
+        exp.scrollTopProperty().bindBidirectional(lineCount.scrollTopProperty());
 
+        //Ocultar las barras del textArea con numeros. Se ven feas
+        ScrollBar VscrollBar = (ScrollBar) lineCount.lookup(".scroll-bar:vertical");
+        VscrollBar.setOpacity(0);
+        ScrollBar HscrollBar = (ScrollBar) lineCount.lookup(".scroll-bar:horizontal");
+        HscrollBar.setOpacity(0);
+        Text texto;
+
+        // Si hay un enter, contar las lineas del texto e imprimir esa cantidad en el textarea de los numeros.
             if(keyEvent.getCode().equals(ENTER)){
                 lineCount.setText("");
                 for(int i = 0; i < exp.getText().lines().count()+1; i++){
-                    lineCount.appendText("\t" + (i+1) + "\n");
+                    lineCount.appendText(i+1 + "\n");
                 }
             }
-
     }
+
+
 }
