@@ -5,7 +5,10 @@ inicio: FUNC ID LLAVE_A cuerpo LLAVE_C;
 
 printConent : expr #printExpr | strings #printString;
 
-functElse: ELSE LLAVE_A cuerpo LLAVE_C ;
+functElse: ELSE LLAVE_A cuerpo LLAVE_C
+           |
+           ELSE functIF
+           ;
 
 functIF: IF PAR_A condition PAR_C LLAVE_A cuerpo LLAVE_C (functElse)? #ifHeader ;
 
