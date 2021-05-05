@@ -23,9 +23,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("primero.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
         primaryStage.setTitle("Calculadora de expresiones");
-        primaryStage.setScene(new Scene(root, 640, 400));
+        primaryStage.setScene(new Scene(root));
         BufferedImage img = null;
 
        primaryStage.getIcons().add(new Image("https://winaero.com/blog/wp-content/uploads/2019/09/Photos-app-icon-256-colorful.png"));

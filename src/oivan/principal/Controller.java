@@ -93,10 +93,9 @@ public class Controller {
 
     }
 
-    public void onLimpiar(ActionEvent actionEvent) {
-        exp.setText("");
+    public void onLimpiar(MouseEvent mouseEvent) {
         res.getChildren().clear();
-        lineCount.setText("");
+
         try {
             FileWriter writer = new FileWriter("res.txt");
             writer.write("");

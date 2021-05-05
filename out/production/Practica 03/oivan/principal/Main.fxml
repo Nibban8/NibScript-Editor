@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane fx:controller="oivan.principal.Controller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="858.0" style="-fx-background-color: #637EA3;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane opacity="0.9" prefHeight="553.0" prefWidth="858.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <center>
+                  <TextArea onKeyPressed="#onKeyTyped" fx:id="exp" prefHeight="425.0" prefWidth="745.0" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets bottom="2.0" left="0" right="2.0" top="2.0" />
+                     </BorderPane.margin>
+                  </TextArea>
+               </center>
+               <bottom>
+                  <ScrollPane prefHeight="120.0" prefWidth="802.0" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </BorderPane.margin>
+                     <content>
+                        <TextFlow fx:id="res" prefHeight="116.0" prefWidth="785.0" />
+                     </content>
+                  </ScrollPane>
+               </bottom>
+               <left>
+                  <TextArea fx:id="lineCount" prefHeight="429.0" prefWidth="50.0" BorderPane.alignment="CENTER" >
+
+                     <BorderPane.margin>
+                        <Insets bottom="2.0" left="2.0" right="0" top="2.0" />
+                     </BorderPane.margin>
+
+                  </TextArea>
+               </left>
+            </BorderPane>
+         </center>
+         <right>
+            <AnchorPane prefHeight="553.0" prefWidth="46.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView onMouseClicked="#onEvaluar"  fitHeight="56.0" fitWidth="59.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="/assets/ant-design_code-twotone.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView onMouseClicked="#onLimpiar"  fitHeight="56.0" fitWidth="59.0" layoutY="487.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="/assets/ant-design_delete-twotone.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </right>
+      </BorderPane>
+   </children>
+</AnchorPane>

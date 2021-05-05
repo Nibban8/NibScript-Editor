@@ -5,20 +5,13 @@ import oivan.parser.OperacionesParser;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousFileChannel;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 public class MyVisitor extends OperacionesBaseVisitor<Integer> {
 
-    Map<String,Integer> memoria = new HashMap<String,Integer>();
-    String print = new String();
+    Map<String,Integer> memoria = new HashMap<>();
+  //  String print = "";
 
     @Override
     public Integer visitDeclaracion(OperacionesParser.DeclaracionContext ctx) {
@@ -32,7 +25,7 @@ public class MyVisitor extends OperacionesBaseVisitor<Integer> {
        }catch (VariableDuplicadaException err){
            try {
                FileWriter writer = new FileWriter("res.txt", true);
-               writer.append("*** [Error] La variable: \"" + id + "\" esta duplicada ***\n");
+               writer.append("*** [Error] La variable: \"").append(id).append("\" esta duplicada ***\n");
                writer.close();
            } catch (IOException e) {
                e.printStackTrace();
@@ -49,33 +42,42 @@ public class MyVisitor extends OperacionesBaseVisitor<Integer> {
         return 0;
     }
 
+//    @Override
+//    public Integer visitElseHeader(OperacionesParser.ElseHeaderContext ctx) {
+//        visit(ctx.cuerpo());
+//        System.out.println("Con un jodereeeeer");
+//        return super.visitElseHeader(ctx);
+//    }
+
+
+
     @Override
     public Integer visitIfHeader(OperacionesParser.IfHeaderContext ctx) {
+
         int izq = visit(ctx.condition().expr(0));
         int der = visit(ctx.condition().expr(1));
         String cond = ctx.condition().comparation().getText();
 
-        Boolean flag = false;
-
-        switch (cond){
-            case "==" :
-                flag = (izq == der); break;
-            case "!=" :
-                flag = (izq != der); break;
-            case ">=" :
-                flag = (izq >= der); break;
-            case "<=" :
-                flag = (izq <= der); break;
-            case "<" :
-                flag = (izq < der); break;
-            case ">" :
-                flag = (izq > der); break;
-        }
+        boolean flag = switch (cond) {
+            case "==" -> (izq == der);
+            case "!=" -> (izq != der);
+            case ">=" -> (izq >= der);
+            case "<=" -> (izq <= der);
+            case "<" -> (izq < der);
+            case ">" -> (izq > der);
+            default -> false;
+        };
         System.out.println(flag);
         if (flag) {
-            visit(ctx.cuerpo());
-        }
+          visit(ctx.cuerpo());
+        }else {
+            try {
+                visit(ctx.functElse());
+            }finally {
+                return 0;
+            }
 
+        }
         return 0;
     }
 
@@ -92,7 +94,7 @@ public class MyVisitor extends OperacionesBaseVisitor<Integer> {
       }catch (VariableNoExisteException err){
            try {
                FileWriter writer = new FileWriter("res.txt", true);
-               writer.append("*** [Error] Asignacion a variable no declarada: \"" + id + "\" ***\n");
+               writer.append("*** [Error] Asignacion a variable no declarada: \"").append(id).append("\" ***\n");
                writer.close();
            } catch (IOException e) {
                e.printStackTrace();
