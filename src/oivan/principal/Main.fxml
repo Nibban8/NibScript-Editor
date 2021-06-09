@@ -45,6 +45,16 @@
          <right>
             <AnchorPane prefHeight="553.0" prefWidth="46.0" BorderPane.alignment="CENTER">
                <children>
+                  <ImageView onMouseClicked="#traducir"  fitHeight="56.0" fitWidth="59.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="/assets/ant-design_control-twotone.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView onMouseClicked="#traduC"  fitHeight="56.0" fitWidth="59.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="/assets/file-icons_c.png" />
+                     </image>
+                  </ImageView>
                   <ImageView onMouseClicked="#onEvaluar"  fitHeight="56.0" fitWidth="59.0" layoutY="432.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="/assets/ant-design_code-twotone.png" />

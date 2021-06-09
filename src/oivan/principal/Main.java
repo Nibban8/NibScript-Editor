@@ -24,7 +24,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
-        primaryStage.setTitle("Calculadora de expresiones");
+        primaryStage.setTitle("Editor");
         primaryStage.setScene(new Scene(root));
         BufferedImage img = null;
 

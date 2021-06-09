@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
@@ -39,7 +40,21 @@ public class Controller {
     private TextArea lineCount;
 
 
+    public void traducir(MouseEvent event)
+    {
+        String texto = exp.getText();
+        texto = texto.replaceAll("(#include <[a-z]*.h>)", " ");
+        texto = texto.replaceAll("\\bprintf\\b", "print");
+        texto = texto.replaceAll("void main\\(\\)", "def miau");
+        texto = texto.replaceAll("\\bint\\b", "let");
+        texto = texto.replaceAll("= 1;", "= true;");
+        texto = texto.replaceAll("= 0;", "= false;");
+        texto = texto.replaceAll("\\( 1 \\)", "\\( true \\)");
+        texto = texto.replaceAll("\\( 0 \\)", "\\( false \\)");
 
+       // System.out.println(texto);
+        exp.setText(texto);
+    }
 
 
     public void onEvaluar(MouseEvent mouseEvent) throws IOException {
@@ -51,7 +66,7 @@ public class Controller {
             //System.out.println(dtf.format(now));
 
             FileWriter writer = new FileWriter("res.txt");
-            writer.write("[" + dtf.format(now) + "]" + " Ejecutando programa... \n");
+            writer.write("[" + dtf.format(now) + "] \n");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -128,4 +143,21 @@ public class Controller {
     }
 
 
+    public void traduC(MouseEvent mouseEvent) {
+        String texto = exp.getText();
+        texto = "#include <stdio.h>" + texto;
+        //texto = texto.replaceAll("(#include <[a-z]*.h>)", " ");
+        texto = texto.replaceAll("\\bprint\\b", "printf");
+        texto = texto.replaceAll("def miau", "void main()");
+        texto = texto.replaceAll("\\blet\\b", "int");
+       // texto = texto.replaceAll("= 1;", "= true;");
+       // texto = texto.replaceAll("= 0;", "= false;");
+       // texto = texto.replaceAll("\\( 1 \\)", "\\( true \\)");
+      //  texto = texto.replaceAll("\\( 0 \\)", "\\( false \\)");
+
+        // System.out.println(texto);
+        exp.setText(texto);
+    }
 }
+
+

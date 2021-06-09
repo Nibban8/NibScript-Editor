@@ -17,124 +17,175 @@ public interface OperacionesVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInicio(OperacionesParser.InicioContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code printExpr}
-	 * labeled alternative in {@link OperacionesParser#printConent}.
+	 * Visit a parse tree produced by {@link OperacionesParser#parse}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPrintExpr(OperacionesParser.PrintExprContext ctx);
+	T visitParse(OperacionesParser.ParseContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code printString}
-	 * labeled alternative in {@link OperacionesParser#printConent}.
+	 * Visit a parse tree produced by {@link OperacionesParser#block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPrintString(OperacionesParser.PrintStringContext ctx);
+	T visitBlock(OperacionesParser.BlockContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link OperacionesParser#functElse}.
+	 * Visit a parse tree produced by {@link OperacionesParser#stat}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctElse(OperacionesParser.FunctElseContext ctx);
+	T visitStat(OperacionesParser.StatContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code ifHeader}
-	 * labeled alternative in {@link OperacionesParser#functIF}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIfHeader(OperacionesParser.IfHeaderContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link OperacionesParser#cuerpo}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCuerpo(OperacionesParser.CuerpoContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link OperacionesParser#condition}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCondition(OperacionesParser.ConditionContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code functionIF}
-	 * labeled alternative in {@link OperacionesParser#linea}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionIF(OperacionesParser.FunctionIFContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code impresion}
-	 * labeled alternative in {@link OperacionesParser#linea}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitImpresion(OperacionesParser.ImpresionContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code declaracion}
-	 * labeled alternative in {@link OperacionesParser#linea}.
+	 * Visit a parse tree produced by {@link OperacionesParser#declaracion}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitDeclaracion(OperacionesParser.DeclaracionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code asignacion}
-	 * labeled alternative in {@link OperacionesParser#linea}.
+	 * Visit a parse tree produced by {@link OperacionesParser#asignacion}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitAsignacion(OperacionesParser.AsignacionContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code espacio}
-	 * labeled alternative in {@link OperacionesParser#linea}.
+	 * Visit a parse tree produced by {@link OperacionesParser#if_stat}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitEspacio(OperacionesParser.EspacioContext ctx);
+	T visitIf_stat(OperacionesParser.If_statContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link OperacionesParser#comparation}.
+	 * Visit a parse tree produced by {@link OperacionesParser#condition_block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitComparation(OperacionesParser.ComparationContext ctx);
+	T visitCondition_block(OperacionesParser.Condition_blockContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link OperacionesParser#strings}.
+	 * Visit a parse tree produced by {@link OperacionesParser#stat_block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStrings(OperacionesParser.StringsContext ctx);
+	T visitStat_block(OperacionesParser.Stat_blockContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code parentesis}
+	 * Visit a parse tree produced by {@link OperacionesParser#while_stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhile_stat(OperacionesParser.While_statContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link OperacionesParser#log}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLog(OperacionesParser.LogContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code notExpr}
 	 * labeled alternative in {@link OperacionesParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParentesis(OperacionesParser.ParentesisContext ctx);
+	T visitNotExpr(OperacionesParser.NotExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code SumRes}
+	 * Visit a parse tree produced by the {@code unaryMinusExpr}
 	 * labeled alternative in {@link OperacionesParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSumRes(OperacionesParser.SumResContext ctx);
+	T visitUnaryMinusExpr(OperacionesParser.UnaryMinusExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code MulDiv}
+	 * Visit a parse tree produced by the {@code multiplicationExpr}
 	 * labeled alternative in {@link OperacionesParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMulDiv(OperacionesParser.MulDivContext ctx);
+	T visitMultiplicationExpr(OperacionesParser.MultiplicationExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code id}
+	 * Visit a parse tree produced by the {@code atomExpr}
 	 * labeled alternative in {@link OperacionesParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitId(OperacionesParser.IdContext ctx);
+	T visitAtomExpr(OperacionesParser.AtomExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code int}
+	 * Visit a parse tree produced by the {@code orExpr}
 	 * labeled alternative in {@link OperacionesParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitInt(OperacionesParser.IntContext ctx);
+	T visitOrExpr(OperacionesParser.OrExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code additiveExpr}
+	 * labeled alternative in {@link OperacionesParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAdditiveExpr(OperacionesParser.AdditiveExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code powExpr}
+	 * labeled alternative in {@link OperacionesParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPowExpr(OperacionesParser.PowExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code relationalExpr}
+	 * labeled alternative in {@link OperacionesParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRelationalExpr(OperacionesParser.RelationalExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code equalityExpr}
+	 * labeled alternative in {@link OperacionesParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEqualityExpr(OperacionesParser.EqualityExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code andExpr}
+	 * labeled alternative in {@link OperacionesParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAndExpr(OperacionesParser.AndExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code parExpr}
+	 * labeled alternative in {@link OperacionesParser#atom}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParExpr(OperacionesParser.ParExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code numberAtom}
+	 * labeled alternative in {@link OperacionesParser#atom}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumberAtom(OperacionesParser.NumberAtomContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code booleanAtom}
+	 * labeled alternative in {@link OperacionesParser#atom}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBooleanAtom(OperacionesParser.BooleanAtomContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code idAtom}
+	 * labeled alternative in {@link OperacionesParser#atom}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdAtom(OperacionesParser.IdAtomContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code stringAtom}
+	 * labeled alternative in {@link OperacionesParser#atom}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringAtom(OperacionesParser.StringAtomContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code nilAtom}
+	 * labeled alternative in {@link OperacionesParser#atom}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNilAtom(OperacionesParser.NilAtomContext ctx);
 }

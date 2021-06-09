@@ -1,81 +1,133 @@
 grammar Operaciones;
 
 
-inicio: FUNC ID LLAVE_A cuerpo LLAVE_C;
+inicio: DEF MAIN LLAVE_A block LLAVE_C;
 
-printConent : expr #printExpr | strings #printString;
+parse
+ : block EOF
+ ;
 
-functElse: ELSE LLAVE_A cuerpo LLAVE_C
-           |
-           ELSE functIF
-           ;
+block
+ : stat*
+ ;
 
-functIF: IF PAR_A condition PAR_C LLAVE_A cuerpo LLAVE_C (functElse)? #ifHeader ;
+stat
+ : declaracion
+ | asignacion
+ | if_stat
+ | while_stat
+ | log
+ | OTHER {System.err.println("unknown char: " + $OTHER.text);}
+ ;
 
+declaracion : LET ID (IGUAL expr)? SEMI;
+asignacion  : ID IGUAL expr SEMI;
 
+if_stat
+ : IF condition_block (ELSE IF condition_block)* (ELSE stat_block)?
+ ;
 
+condition_block
+ : expr stat_block
+ ;
 
-cuerpo: linea+;
+stat_block
+ : LLAVE_A block LLAVE_C
+ | stat
+ ;
 
-condition: expr comparation expr;
+while_stat
+ : WHILE expr stat_block
+ ;
 
-linea:
-        functIF                           #functionIF
-        |
-        PRINT printConent SEMI      #impresion
-        |
-        LET ID (IGUAL expr)? SEMI   #declaracion
-        |
-        ID IGUAL expr SEMI          #asignacion
-        |
-        SEMI                        #espacio
-        ;
+log
+ : PRINT expr SEMI
+ ;
 
+expr
+ : expr POW expr           #powExpr
+ | MENOS expr                           #unaryMinusExpr
+ | NOT expr                             #notExpr
+ | expr op=(MULT | DIV | MOD) expr      #multiplicationExpr
+ | expr op=(MAS | MENOS) expr          #additiveExpr
+ | expr op=(LTEQ | GTEQ | LT | GT) expr #relationalExpr
+ | expr op=(EQ | NEQ) expr              #equalityExpr
+ | expr AND expr                        #andExpr
+ | expr OR expr                         #orExpr
+ | atom                                 #atomExpr
+ ;
 
-comparation: EQ | NEQ | EQ_G | EQ_L | GREATER | LESS ;
+atom
+ : OPAR expr CPAR #parExpr
+ | (INT | FLOAT)  #numberAtom
+ | (TRUE | FALSE) #booleanAtom
+ | ID             #idAtom
+ | STRING         #stringAtom
+ | NIL            #nilAtom
+ ;
 
-strings : (STRING | STRING MAS)+;
+DEF : 'def';
+MAIN : 'miau';
+LET : 'let';
 
-expr :
-        expr op = (POR | DIV) expr       #MulDiv
-        |
-        expr op = (MAS | MENOS) expr     #SumRes
-        |
-        INT                         #int
-        |
-        ID                          #id
-        |
-        PAR_A expr PAR_C            #parentesis
-        ;
-
-
+OR : '||';
+AND : '&&';
 
 EQ : '==';
-GREATER : '>';
-LESS : '<';
-EQ_G : '>=';
-EQ_L : '<=';
 NEQ : '!=';
+GT : '>';
+LT : '<';
+GTEQ : '>=';
+LTEQ : '<=';
 
+MAS : '+';
+MENOS : '-';
+MULT : '*';
+DIV : '/';
 
+MOD : '%';
+
+POW : '^';
+NOT : '!';
+
+SEMI : ';';
+IGUAL : '=';
+OPAR : '(';
+CPAR : ')';
+LLAVE_A : '{';
+LLAVE_C : '}';
+
+TRUE : 'true';
+FALSE : 'false';
+NIL : 'nil';
 
 IF : 'if';
 ELSE : 'else';
-LET : 'let';
-FUNC : 'function';
-PRINT: 'print';
-LLAVE_A : '{';
-LLAVE_C : '}';
-ID: [a-z][a-zA-Z0-9]*;
-IGUAL: '=';
-MAS:    '+';
-MENOS:  '-';
-POR: '*';
-DIV: '/';
-INT:    [0-9]+;
-PAR_A:  '(';
-PAR_C:  ')';
-SEMI: ';';
-STRING: '"' (ESC | .)*? '"';
-fragment ESC: '\\' [btnr"\\];
-ESPACIOS: [ \n\t]+ -> skip;
+WHILE : 'while';
+PRINT : 'print';
+
+ID
+ : [a-zA-Z_] [a-zA-Z_0-9]*
+ ;
+
+INT
+ : [0-9]+
+ ;
+
+FLOAT
+ : [0-9]+ '.' [0-9]*
+ | '.' [0-9]+
+ ;
+
+STRING
+ : '"' (~["\r\n] | '""')* '"'
+ ;
+COMMENT
+ : '\\' ~[\r\n]* -> skip
+ ;
+SPACE
+ : [ \t\r\n] -> skip
+ ;
+OTHER
+ : .
+ ;
