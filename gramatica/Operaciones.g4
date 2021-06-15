@@ -15,6 +15,7 @@ stat
  : declaracion
  | asignacion
  | if_stat
+ | else_stat
  | while_stat
  | log
  | OTHER {System.err.println("unknown char: " + $OTHER.text);}
@@ -27,9 +28,12 @@ if_stat
  : IF condition_block (ELSE IF condition_block)* (ELSE stat_block)?
  ;
 
+else_stat : ELSE if_stat;
+
 condition_block
  : expr stat_block
  ;
+
 
 stat_block
  : LLAVE_A block LLAVE_C
@@ -123,7 +127,7 @@ STRING
  : '"' (~["\r\n] | '""')* '"'
  ;
 COMMENT
- : '\\' ~[\r\n]* -> skip
+ : '/**' .*? '**/' ~[ ]* -> skip
  ;
 SPACE
  : [ \t\r\n] -> skip

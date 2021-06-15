@@ -53,6 +53,12 @@ public interface OperacionesVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIf_stat(OperacionesParser.If_statContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link OperacionesParser#else_stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitElse_stat(OperacionesParser.Else_statContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link OperacionesParser#condition_block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

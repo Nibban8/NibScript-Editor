@@ -7,10 +7,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import org.antlr.v4.runtime.misc.NotNull;
+import org.stringtemplate.v4.ST;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.PrintWriter;
+import java.util.*;
 
 public class MyVisitor extends OperacionesBaseVisitor<Value> {
 
@@ -18,34 +18,52 @@ public class MyVisitor extends OperacionesBaseVisitor<Value> {
     public static final double SMALL_VALUE = 0.00000000001;
 
     // store variables (there's only one global scope!)
+
+    // Antes
     private Map<String, Value> mem = new HashMap<String, Value>();
+
+    // Ahora
+    private Stack<HashMap> scopes = new Stack<HashMap>();
+
+
+    @Override
+    public Value visitBlock(OperacionesParser.BlockContext ctx) {
+
+        scopes.push(new HashMap<String,Value>());
+        super.visitBlock(ctx);
+        scopes.pop();
+        return null;
+    }
 
     // assignment/id overrides
     @Override
     public Value visitAsignacion(OperacionesParser.AsignacionContext ctx) {
         String id = ctx.ID().getText();
+
         Value value = this.visit(ctx.expr());
+        Boolean flag = false;
 
+        Stack tempScopes = (Stack) scopes.clone();
 
-        try{
-            if (!mem.containsKey(id)){
-                throw new VariableNoExisteException("[Error] Asignacion a variable no declarada: " + id);
-            }
-            mem.put(id,value);
-        }catch (VariableNoExisteException err){
-            try {
-                FileWriter writer = new FileWriter("res.txt", true);
-                writer.append("*** [Error] Asignacion a variable no declarada: \"").append(id).append("\" ***\n");
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+        while(!tempScopes.empty()) {
+            Map temp = (Map) tempScopes.pop();
+            if(temp.get(id) != null){
+                temp.put(id,value);
+                flag = true;
+                break;
             }
         }
 
-        return mem.put(id, value);
+        if(flag == false) {
 
+            try {
+                throw new VariableNoExisteException("*** [Error] La variable \""+ id + "\" no existe ***");
+            } catch (VariableNoExisteException err) {
+                err.printStackTrace();
+            }
+        }
 
-
+        return value;
 
     }
 
@@ -54,37 +72,61 @@ public class MyVisitor extends OperacionesBaseVisitor<Value> {
     public Value visitDeclaracion(OperacionesParser.DeclaracionContext ctx) {
         String id  = ctx.ID().getText();
 
-        try{
-            if(mem.containsKey(id))
-                throw new VariableDuplicadaException("[Error] La variable: \" "+ id + "\" esta duplicada");
 
-        }catch (VariableDuplicadaException err){
-            try {
-                FileWriter writer = new FileWriter("res.txt", true);
-                writer.append("*** [Error] La variable: \"").append(id).append("\" esta duplicada ***\n");
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+        Boolean flag = false;
+
+        Stack tempScopes = (Stack) scopes.clone();
+
+        while(!tempScopes.empty()) {
+            Map temp = (Map) tempScopes.pop();
+            if(temp.get(id) != null){
+                flag = true;
+                break;
             }
         }
-        try {
-            Value valor = visit(ctx.expr());
-            mem.put(id,valor);
 
-        } catch (Exception e) {
-            mem.put(id,new Value(0));
+        if(flag) {
+            try {
+                throw new VariableNoExisteException("*** [Error] La variable \""+ id + "\" esta duplicada ***");
+            } catch (VariableNoExisteException err) {
+                err.printStackTrace();
+            }
         }
 
-        return super.visitDeclaracion(ctx);
+        try {
+            Value valor = visit(ctx.expr());
+            scopes.peek().put(id,valor);
+
+        } catch (Exception e) {
+            scopes.peek().put(id,new Value(0));
+        }
+
+
+        return null;
     }
 
     @Override
     public Value visitIdAtom(OperacionesParser.IdAtomContext ctx) {
         String id = ctx.getText();
-        Value value = mem.get(id);
+        Value value = null;
+
+        Stack tempScopes = (Stack) scopes.clone();
+
+       while(!tempScopes.empty()) {
+           Map temp = (Map) tempScopes.pop();
+           if(temp.get(id) != null){
+               return (Value) temp.get(id);
+           }
+       }
+
         if(value == null) {
-            throw new RuntimeException("no such variable: " + id);
+            try {
+                throw new VariableNoExisteException("*** [Error] La variable \" "+ id + "\" no existe ***");
+            } catch (VariableNoExisteException err) {
+               err.printStackTrace();
+            }
         }
+
         return value;
     }
 
@@ -288,7 +330,9 @@ public class MyVisitor extends OperacionesBaseVisitor<Value> {
         return Value.VOID;
     }
 
-    // while override
+    // while overrid
+
+
     @Override
     public Value visitWhile_stat(OperacionesParser.While_statContext ctx) {
 

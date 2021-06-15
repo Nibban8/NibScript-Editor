@@ -2,6 +2,7 @@ package oivan.principal;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -10,9 +11,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.io.*;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
@@ -25,7 +28,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-public class Controller {
+public class Controller implements Initializable {
 
     private static final KeyCode ENTER = KeyCode.ENTER;
 
@@ -40,6 +43,9 @@ public class Controller {
     private TextArea lineCount;
 
 
+    static TextFlow staticRes;
+
+
     public void traducir(MouseEvent event)
     {
         String texto = exp.getText();
@@ -47,10 +53,14 @@ public class Controller {
         texto = texto.replaceAll("\\bprintf\\b", "print");
         texto = texto.replaceAll("void main\\(\\)", "def miau");
         texto = texto.replaceAll("\\bint\\b", "let");
-        texto = texto.replaceAll("= 1;", "= true;");
-        texto = texto.replaceAll("= 0;", "= false;");
-        texto = texto.replaceAll("\\( 1 \\)", "\\( true \\)");
-        texto = texto.replaceAll("\\( 0 \\)", "\\( false \\)");
+        texto = texto.replaceAll("\\bfloat\\b", "let");
+     
+
+
+//        texto = texto.replaceAll("= 1;", "= true;");
+//        texto = texto.replaceAll("= 0;", "= false;");
+//        texto = texto.replaceAll("\\( 1 \\)", "\\( true \\)");
+//        texto = texto.replaceAll("\\( 0 \\)", "\\( false \\)");
 
        // System.out.println(texto);
         exp.setText(texto);
@@ -157,6 +167,12 @@ public class Controller {
 
         // System.out.println(texto);
         exp.setText(texto);
+    }
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        staticRes = res;
     }
 }
 
